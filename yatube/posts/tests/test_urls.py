@@ -38,11 +38,17 @@ class PostURLTests(TestCase):
         cls.authorized_urls = {
             f'/posts/{cls.post.id}/edit/': 'posts/create_post.html',
             '/create/': 'posts/create_post.html',
+            '/follow/': 'posts/follow.html',
         }
         cls.redirect_urls = {
             f'/posts/{cls.post.id}/edit/':
                 f'/auth/login/?next=/posts/{cls.post.id}/edit/',
             '/create/': '/auth/login/?next=/create/',
+            '/follow/': '/auth/login/?next=/follow/',
+            f'/profile/{cls.user.username}/follow/':
+                f'/auth/login/?next=/profile/{cls.user.username}/follow/',
+            f'/profile/{cls.user.username}/unfollow/':
+                f'/auth/login/?next=/profile/{cls.user.username}/unfollow/',
         }
 
     def setUp(self):
