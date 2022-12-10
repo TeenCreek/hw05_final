@@ -139,7 +139,7 @@ class PostsFormTest(TestCase):
                 id=self.post.id,
                 author=self.post.author,
                 text=form_data['text'],
-                group=self.group,
+                group=form_data['group'],
                 pub_date=self.post.pub_date,
             ).exists()
         )
@@ -258,7 +258,6 @@ class CommentFormTest(TestCase):
         comments_count = Comment.objects.count()
         form_data = {
             'text': 'Создан тестовый комментарий',
-            'post_id': self.post.id
         }
         response = self.authorized_client.post(
             reverse('posts:add_comment', kwargs={'post_id': self.post.id}),
@@ -286,7 +285,6 @@ class CommentFormTest(TestCase):
         comments_count = Comment.objects.count()
         form_data = {
             'text': 'Создан тестовый комментарий',
-            'post_id': self.post.id
         }
         self.guest_client.post(
             reverse('posts:add_comment', kwargs={'post_id': self.post.id}),

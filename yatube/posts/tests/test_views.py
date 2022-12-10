@@ -69,6 +69,7 @@ class PostPagesTests(TestCase):
             reverse('posts:post_edit', kwargs={'post_id': self.post.id}):
                 'posts/create_post.html',
             reverse('posts:post_create'): 'posts/create_post.html',
+            reverse('posts:follow_index'): 'posts/follow.html',
         }
         for reverse_name, template in templates_pages_names.items():
             with self.subTest(reverse_name=reverse_name):
@@ -344,7 +345,6 @@ class CacheTests(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.user = User.objects.create_user(username='TestUser')
-
         cls.post = Post.objects.create(
             text='Тестовый пост',
             author=cls.user,
@@ -353,14 +353,17 @@ class CacheTests(TestCase):
     def setUp(self):
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
+        cache.clear()
 
     def test_cache(self):
-        response = self.authorized_client.get(reverse('posts:index'))
-        post_before_clear_cache = response.content
-        new_response = self.authorized_client.get(reverse('posts:index'))
-        first_item_after = new_response.content
-        self.assertEqual(first_item_after, post_before_clear_cache)
+        """Страница сохраняется в кеше"""
+        response = self.client.get(reverse('posts:index'))
+        post = Post.objects.last()
+        post.delete()
+        self.assertEqual(
+            response.context['page_obj'][0].text,
+            post.text
+        )
         cache.clear()
-        post_after_clear_cache = self.authorized_client.get(
-            reverse('posts:index'))
-        self.assertNotEqual(first_item_after, post_after_clear_cache)
+        response = self.client.get(reverse('posts:index'))
+        self.assertNotContains(response, post.text)

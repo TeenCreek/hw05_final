@@ -8,7 +8,7 @@ from .models import Follow, Group, Post, User
 SHOW_POSTS_COUNT = 10
 
 
-def paginator(posts, request, post_count):
+def paginator(posts, request, post_count=SHOW_POSTS_COUNT):
     paginator = Paginator(posts, post_count)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -17,7 +17,7 @@ def paginator(posts, request, post_count):
 
 def index(request):
     posts = Post.objects.select_related('author', 'group')
-    page_obj = paginator(posts, request, SHOW_POSTS_COUNT)
+    page_obj = paginator(posts, request)
     template = 'posts/index.html'
     context = {
         'page_obj': page_obj,
@@ -28,7 +28,7 @@ def index(request):
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
     posts = group.posts.select_related('author')
-    page_obj = paginator(posts, request, SHOW_POSTS_COUNT)
+    page_obj = paginator(posts, request)
     template = 'posts/group_list.html'
     context = {
         'group': group,
@@ -40,7 +40,7 @@ def group_posts(request, slug):
 def profile(request, username):
     author = get_object_or_404(User, username=username)
     posts = author.posts.select_related('group')
-    page_obj = paginator(posts, request, SHOW_POSTS_COUNT)
+    page_obj = paginator(posts, request)
     following = (
         request.user.is_authenticated and Follow.objects.filter(
             user=request.user, author=author
@@ -105,7 +105,6 @@ def post_edit(request, post_id):
         return redirect('posts:post_detail', post.pk)
 
     context = {
-        'post': post,
         'form': form,
         'is_edit': True,
     }
@@ -129,7 +128,7 @@ def add_comment(request, post_id):
 def follow_index(request):
     template = 'posts/follow.html'
     posts = Post.objects.filter(author__following__user=request.user)
-    page_obj = paginator(posts, request, SHOW_POSTS_COUNT)
+    page_obj = paginator(posts, request)
     context = {
         'page_obj': page_obj
     }

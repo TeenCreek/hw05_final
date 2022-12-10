@@ -67,12 +67,13 @@ class Post(models.Model):
 class Comment(CreatedModel):
     post = models.ForeignKey(
         Post,
-        on_delete=models.SET_NULL,
-        related_name='comments',
-        blank=True,
+        on_delete=models.CASCADE,
+        # Оставил null=True, так как без него у меня крашатся тесты
+        # И не делаются миграции.
         null=True,
-        verbose_name='Комментарий к посту',
-        help_text='Комментарий, которой будет относиться к посту',
+        related_name='comments',
+        verbose_name='Пост, к которому будет относиться комментарий',
+        help_text='Пост, к которому относится комментарий',
     )
     author = models.ForeignKey(
         User,
