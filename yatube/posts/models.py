@@ -68,9 +68,6 @@ class Comment(CreatedModel):
     post = models.ForeignKey(
         Post,
         on_delete=models.CASCADE,
-        # Оставил null=True, так как без него у меня крашатся тесты
-        # И не делаются миграции.
-        null=True,
         related_name='comments',
         verbose_name='Пост, к которому будет относиться комментарий',
         help_text='Пост, к которому относится комментарий',

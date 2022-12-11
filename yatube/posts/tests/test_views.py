@@ -353,17 +353,21 @@ class CacheTests(TestCase):
     def setUp(self):
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
-        cache.clear()
 
     def test_cache(self):
         """Страница сохраняется в кеше"""
-        response = self.client.get(reverse('posts:index'))
-        post = Post.objects.last()
-        post.delete()
-        self.assertEqual(
-            response.context['page_obj'][0].text,
-            post.text
-        )
+        first_response = self.authorized_client.get(reverse('posts:index'))
+        first_post = first_response.content
+
+        self.post.delete()
+
+        second_response = self.authorized_client.get(reverse('posts:index'))
+        second_posts = second_response.content
+
+        self.assertEqual(second_posts, first_post)
         cache.clear()
-        response = self.client.get(reverse('posts:index'))
-        self.assertNotContains(response, post.text)
+
+        third_response = self.authorized_client.get(reverse('posts:index'))
+        third_posts = third_response.content
+
+        self.assertNotEqual(third_posts, first_post)
