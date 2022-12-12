@@ -15,15 +15,15 @@
 
 ## Установка проекта из репозитория
 1. Клонировать репозиторий и перейти в него в командной строке:
-`git clone git@github.com:TeenCreek/yatube.git`
-`cd yatube`
+```git clone git@github.com:TeenCreek/yatube.git
+cd yatube```
 
 2. Cоздать и активировать виртуальное окружение:
-`python -m venv venv`
-`source venv/Scripts/activate`
+```python -m venv venv
+source venv/Scripts/activate```
 
 3. Установить зависимости из файла **requirements.txt**:
-`pip install -r requirements.txt`
+```pip install -r requirements.txt```
 
 4. Перейти в директорию **yatube** и запустить проект на локальном сервере:
-`python manage.py runserver`
+```python manage.py runserver```
