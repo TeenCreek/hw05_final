@@ -1,3 +1,29 @@
-# hw05_final
+# Социальная сеть YaTube для публикации постов и картинок
 
-[![CI](https://github.com/yandex-praktikum/hw05_final/actions/workflows/python-app.yml/badge.svg?branch=master)](https://github.com/yandex-praktikum/hw05_final/actions/workflows/python-app.yml)
+## Описание проекта
+Проект создан в рамках учебного курса ЯП.
+Социальная сеть для авторов и подписчиков. Пользователи могут подписываться на избранных авторов, оставлять и удалять комментари к постам, оставлять новые посты на главной странице и в тематических группах, прикреплять изображения к публикуемым постам.
+
+## Стек технологий
+- Python
+- Django
+- Unittest
+- Pytest
+- SQLite3
+- CSS
+- HTML
+
+## Установка проекта из репозитория
+1. Клонировать репозиторий и перейти в него в командной строке:
+`git clone git@github.com:TeenCreek/yatube.git`
+`cd yatube`
+
+2. Cоздать и активировать виртуальное окружение:
+`python -m venv venv`
+`source venv/Scripts/activate`
+
+3. Установить зависимости из файла **requirements.txt**:
+`pip install -r requirements.txt`
+
+4. Перейти в директорию **yatube** и запустить проект на локальном сервере:
+`python manage.py runserver`
